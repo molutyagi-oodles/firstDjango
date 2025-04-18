@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}My Tasks{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-10">
+  <div class="flex items-center justify-between mb-8">
+    <h2 class="text-3xl font-bold text-blue-700">My Tasks</h2>
+    <a href="{% url 'create_task' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow">
+      + Create Task
+    </a>
+  </div>
+
+  {% if tasks %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for task in tasks %}
+        <div class="bg-white border-2 {% if task.completed %}border-green-400{% else %}border-yellow-400{% endif %} rounded-xl shadow-md p-6 transition hover:shadow-lg">
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ task.title }}</h3>
+          <p class="text-gray-600 mb-4">{{ task.description|default:"No description." }}</p>
+
+          {% if task.due_date %}
+            <p class="text-sm text-gray-500 mb-2">
+              <span class="font-medium">Due:</span> {{ task.due_date|date:"M d, Y H:i" }}
+            </p>
+          {% endif %}
+
+          <p class="text-sm mb-4">
+            Status:
+            <span class="font-semibold {% if task.completed %}text-green-600{% else %}text-yellow-600{% endif %}">
+              {% if task.completed %}Completed{% else %}Pending{% endif %}
+            </span>
+          </p>
+
+          <div class="flex gap-3">
+            <a href="{% url 'task_update' task.id %}" class="text-sm bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded-lg font-medium">
+              Update
+            </a>
+            <a href="{% url 'task_delete' task.id %}" class="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg font-medium">
+              Delete
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-center text-gray-600">No tasks found. 
+      <a href="{% url 'create_task' %}" class="text-blue-600 hover:underline font-semibold">Create a new task</a>
+    </p>
+  {% endif %}
+</div>
+{% endblock %}

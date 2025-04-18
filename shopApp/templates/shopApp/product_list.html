@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Our Products{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto p-6">
+    <h1 class="text-4xl font-bold text-blue-700 text-center mb-8">Our Products</h1>
+
+    {% if products %}
+    <ul class="space-y-4">
+        {% for product in products %}
+        <li class="p-4 border border-gray-200 rounded-lg shadow-sm flex justify-between items-center hover:shadow-md transition">
+            <div>
+                <a href="{% url 'product_details' product.id %}" class="text-lg font-semibold text-blue-600 hover:underline">
+                    {{ product.name }}
+                </a>
+                <p class="text-gray-600">${{ product.price }}</p>
+            </div>
+            <a href="{% url 'product_details' product.id %}" class="text-sm text-white bg-blue-600 hover:bg-blue-700 py-1 px-3 rounded-md">
+                View Details
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-center text-gray-500 mt-8">No products available.</p>
+    {% endif %}
+
+    <div class="mt-10 text-center">
+        <a href="{% url 'shop' %}" class="inline-block bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded-lg transition">
+            ← Back to Shop Home
+        </a>
+    </div>
+</div>
+{% endblock %}
